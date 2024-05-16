@@ -1,11 +1,19 @@
-version: '2.1'
+version: 2.1
+
 orbs:
   cypress: cypress-io/cypress@3
+
+jobs:
+  cypress-run:
+    docker:
+      - image: cypress/base:12.18.3
+    steps:
+      - checkout
+      - cypress/install
+      - cypress/run
+
 workflows:
-  use-my-orb:
+  version: 2
+  cypress-workflow:
     jobs:
-      - cypress/run:
-          cypress-cache-key: custom-cypress-cache-v1-{{ arch }}-{{ checksum "package.json" }}
-          cypress-cache-path: ~/.cache/custom-dir/Cypress
-          cypress-command: npx cypress run
-          node-cache-version: v2
+      - cypress-run
